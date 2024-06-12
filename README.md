@@ -1,1 +1,3 @@
 # saebMiguel2023
+Eu realmente aprendi alguma coisa...
+É demorado mas dá pra tentar pelo menos um pouco

@@ -1,32 +1,32 @@
 <?php
 require_once('./connection.php');
-function updateFiveValues($table, $fields, $id, )
+function select($fields, $table)
 {
     try {
         $conn = connect();
         $conn->beginTransaction();
-        $update = $conn->prepare("UPDATE $table SET $fields WHERE id = :id");
-        $update->bindParam(":valueOne", $valueOne);
-        $update->bindParam(":valueTwo", $valueTwo);
-        $update->bindParam(":valueThree", $valueThree);
-        $update->bindParam(":valueFour", $valueFour);
-        $update->bindParam(":valueFive", $valueFive);
-        $update->bindParam(":idtask", $id);
-        $update->execute();
+        $select = $conn->prepare("SELECT $fields FROM $table");
+        $select->execute();
         $conn->commit();
-        $response = [
-            'message' => 'Edição executada com sucesso.',
-            'success' => true,
-        ];
-        return $response;
+        return $select;
     } catch (PDOException $e) {
         $conn->rollBack();
         echo ('ERROR - ' . $e->getMessage());
-        $response = [
-            'message' => 'Erro ao executar edição.',
-            'success' => false,
-        ];
-        return $response;
+    }
+}
+function selectLogin($fields, $table, $fieldVerifier, $value)
+{
+    try {
+        $conn = connect();
+        $conn->beginTransaction();
+        $select = $conn->prepare("SELECT $fields FROM $table WHERE $fieldVerifier = :value");
+        $select->bindParam(":value", $value);
+        $select->execute();
+        $conn->commit();
+        return $select;
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        echo ('ERROR - ' . $e->getMessage());
     }
 }
 function insertOneField($table, $fields, $valueOne)

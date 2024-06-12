@@ -28,9 +28,13 @@
                         <label for="loginSenha" class="form-label">Senha</label>
                         <input type="password" class="form-control" id="loginSenha" name="loginSenha">
                     </div>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert" style="display: none;">
+                        {placeHolder}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <div class="d-flex justify-content-end">
                         <a href="./registrar.php" class="btn btn-warning me-1">Cadastrar</a>
-                        <button type="button" class="btn btn-primary">Entrar</button>
+                        <button type="button" class="btn btn-primary" onclick="logar();" id="btnLogin">Entrar</button>
                     </div>
                 </form>
             </div>
