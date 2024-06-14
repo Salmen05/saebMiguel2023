@@ -45,7 +45,7 @@ session_start();
                     </div>
                     <div class="d-flex justify-content-end">
                         <a href="./index.php" class="btn btn-warning me-1">Entrar</a>
-                        <button type="button" class="btn btn-primary" onclick="registrar();">Registrar</button>
+                        <button type="button" class="btn btn-primary" onclick="registrar();" id="btnRegistrar">Registrar</button>
                     </div>
                 </form>
             </div>

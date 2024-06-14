@@ -64,6 +64,7 @@ function logar() {
 function registrar() {
     const formRegistro = document.querySelector("#formRegistro");
     const alert = document.querySelector("#alert");
+    const btnRegistrar = document.querySelector("#btnRegistrar");
     const registroNome = document.querySelector("#registroNome").value;
     const registroEmail = document.querySelector("#registroEmail").value;
     const registroSenha = document.querySelector("#registroSenha").value;
@@ -87,6 +88,7 @@ function registrar() {
         alert.style.display = "block";
         alert.innerHTML = "As senhas não conferem!";
     } else {
+        btnRegistrar.disabled = true;
         alert.style.display = "none";
         const formData = new FormData(formRegistro);
         const url = "./insert.php";
@@ -99,17 +101,100 @@ function registrar() {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
+                formRegistro.reset();
                 if (data.success) {
-                    console.log(data);
-                    alert.style.display = "block";
-                    alert.innerHTML = "Deu certo!";
-                    alert.classList.remove("alert-warning");
-                    alert.classList.add("alert-success");
+                    Swal.fire({
+                        title: "Sucesso!",
+                        text: "Você já pode fazer login na tela inicial.",
+                        icon: "success",
+                    });
+                    setTimeout(function () {
+                        location.href = "./index.php";
+                    }, 1500)
                 } else {
-                    console.log(data)
+                    Swal.fire({
+                        title: "Oops!",
+                        text: "Não foi possível registrar.",
+                        icon: "error",
+                    });
+                    btn.disabled = false;
                 }
             })
     }
+}
+function addTurma() {
+    const modalAddTurma = new bootstrap.Modal(document.querySelector("#modalAddTurma"));
+    const btnAdd = document.querySelector("#btnAdd");
+    modalAddTurma.show();
+    btnAdd.addEventListener("click", function () {
+        const formAddTurma = document.querySelector("#formAddTurma");
+        const inpAddNomeTurma = document.querySelector("#addNomeTurma").value;
+        const alert = document.querySelector("#alert");
+        const btnAdd = document.querySelector("#btnAdd");
+        if (inpAddNomeTurma.length < 6) {
+            alert.style.display = 'block';
+        } else {
+            btnAdd.disabled = true;
+            alert.style.display = 'none';
+            const formData = new FormData(formAddTurma);
+            const url = "./insert.php";
+            fetch(url, {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: formData,
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Sucesso!",
+                            text: "Você já pode verificar a turma na tabela.",
+                            icon: "success",
+                        });
+                        formAddTurma.reset();
+                        btnAdd.disabled = false;
+                        modalAddTurma.hide();
+                        carregarConteudo('turma');
+                    } else {
+                        Swal.fire({
+                            title: "Oops!",
+                            text: "Não foi possível adicionar a turma.",
+                            icon: "error",
+                        });
+                        formAddTurma.reset();
+                        modal.disabled = false;
+                        modalAddTurma.hide();
+                    };
+                });
+        }
+    })
+}
+function deletarTurma(idturma) {
+    const modalDelete = new bootstrap.Modal(document.querySelector("#modalDelete"));
+    const bodyModalDelete = document.querySelector("#bodyModalDelete");
+    const btnModalDeletar = document.querySelector("#btnModalDeletar");
+    modalDelete.show();
+    bodyModalDelete.innerHTML = `Tem certeza que deseja deletar a turma de número ${idturma}?`
+    btnModalDeletar.addEventListener("click", function () {
+        const formData = new FormData();
+        formData.append("idturma", idturma)
+        const url = "./deletar.php";
+        fetch(url, {
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: formData,
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+    })
 }
 function carregarConteudo(page) {
     const url = "./controle.php";

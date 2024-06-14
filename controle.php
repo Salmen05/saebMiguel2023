@@ -5,7 +5,9 @@ if (isset($_POST['page'])) {
     switch ($page) {
         case 'turma':
             require_once("./turma.php");
+            break;
         case 'atividade':
             require_once("./atividade.php");
+            break;
     }
 }

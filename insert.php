@@ -10,5 +10,10 @@ if (isset($_POST['registroNome'])) {
     $senha = password_hash($senha, PASSWORD_BCRYPT, $options);
     $data = insertThreeFields('tbprofessor', 'nome, email, senha', $nome, $email, $senha);
 }
+if (isset($_POST['addNomeTurma'])) {
+    $idprofessor = $_POST['idprofessor'];
+    $nome = $_POST['addNomeTurma'];
+    $data = insertTwoFields('tbturma', 'idprofessor, nome', $idprofessor, $nome);
+}
 echo json_encode($data, JSON_UNESCAPED_UNICODE);
 ob_end_flush();

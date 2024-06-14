@@ -14,6 +14,29 @@ function select($fields, $table)
         echo ('ERROR - ' . $e->getMessage());
     }
 }
+function delete($table, $where, $id)
+{
+    try {
+        $conn = connect();
+        $conn->beginTransaction();
+        $delete = $conn->prepare("DELETE FROM $table WHERE $where = $id");
+        $delete->execute();
+        $conn->commit();
+        $response = [
+            'message' => 'Delete executado com sucesso.',
+            'success' => true,
+        ];
+        return $response;
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        echo ('ERROR - ' . $e->getMessage());
+        $response = [
+            'message' => 'Erro ao executar delete.',
+            'success' => false,
+        ];
+        return $response;
+    }
+}
 function selectLogin($fields, $table, $fieldVerifier, $value)
 {
     try {
