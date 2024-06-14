@@ -131,7 +131,6 @@ function addTurma() {
         const formAddTurma = document.querySelector("#formAddTurma");
         const inpAddNomeTurma = document.querySelector("#addNomeTurma").value;
         const alert = document.querySelector("#alert");
-        const btnAdd = document.querySelector("#btnAdd");
         if (inpAddNomeTurma.length < 6) {
             alert.style.display = 'block';
         } else {
@@ -173,6 +172,9 @@ function addTurma() {
         }
     })
 }
+function addAtividade(){
+    
+}
 function deletarTurma(idturma) {
     const modalDelete = new bootstrap.Modal(document.querySelector("#modalDelete"));
     const bodyModalDelete = document.querySelector("#bodyModalDelete");
@@ -192,17 +194,51 @@ function deletarTurma(idturma) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log(data)
+                Swal.fire({
+                    title: "Sucesso!",
+                    text: "Turma deletada com sucesso.",
+                    icon: "success",
+                });
+                modalDelete.hide();
+                carregarConteudo('turma');
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Oops!",
+                    text: "Ainda existem atividades para a turma realizar.",
+                    icon: "error",
+                });
+                modalDelete.hide();
+                carregarConteudo('turma');
             })
     })
 }
-function carregarConteudo(page) {
-    const url = "./controle.php";
+function visualizarTurma(idturma) {
+    const url = "./ponteAtividade.php";
+    const formData = new FormData();
+    formData.append("idturma", idturma);
     fetch(url, {
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Accept': 'application/json'
         },
-        body: `page=${encodeURIComponent(page)}`,
+        body: formData,
+        method: 'POST'
+    })
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector("#conteudo").innerHTML = data
+        })
+}
+function carregarConteudo(page) {
+    const url = "./controle.php";
+    const formData = new FormData();
+    formData.append("page", page)
+    fetch(url, {
+        headers: {
+            'Accept': 'application/json'
+        },
+        body: formData,
         method: 'POST'
     })
         .then(response => response.text())

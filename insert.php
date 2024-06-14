@@ -15,5 +15,10 @@ if (isset($_POST['addNomeTurma'])) {
     $nome = $_POST['addNomeTurma'];
     $data = insertTwoFields('tbturma', 'idprofessor, nome', $idprofessor, $nome);
 }
+if (isset($_POST['addNomeAtividade'])) {
+    $idturma = $_POST['idturma'];
+    $nome = $_POST['addNomeAtividade'];
+    $data = insertTwoFields('tbatividade', 'idturma, nome', $idturma, $nome);
+}
 echo json_encode($data, JSON_UNESCAPED_UNICODE);
 ob_end_flush();
